@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LuckyPlay PH</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: #1e1e2f;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    header {
+      background: linear-gradient(90deg, #ffcb05, #ff3d00);
+      padding: 1rem;
+    }
+    h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+    .wallet {
+      margin: 1rem;
+      font-size: 1.2rem;
+    }
+    .games {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+    }
+    .game-card {
+      background: #2e2e48;
+      border-radius: 1rem;
+      padding: 1rem;
+      width: 150px;
+      cursor: pointer;
+    }
+    .leaderboard, .daily-bonus {
+      background: #2e2e48;
+      margin: 1rem auto;
+      padding: 1rem;
+      border-radius: 1rem;
+      width: 90%;
+      max-width: 600px;
+    }
+    button {
+      background: #ff3d00;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: #555;
+      cursor: not-allowed;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🎰 LuckyPlay PH 🎰</h1>
+  </header>
+
+  <div class="wallet" id="wallet">Coins: 100</div>
+
+  <div class="daily-bonus">
+    <button onclick="claimBonus()" id="bonusBtn">🎁 Claim Daily Bonus</button>
+  </div>
+
+  <div class="games">
+    <div class="game-card" onclick="playGame('Color Game')">🎲 Color Game</div>
+    <div class="game-card" onclick="playGame('Dragon Tiger')">🐯 Dragon Tiger</div>
+    <div class="game-card" onclick="playGame('Lucky Spin')">🎰 Lucky Spin</div>
+    <div class="game-card" onclick="playGame('Slot Machine')">💎 Slot Machine</div>
+    <div class="game-card" onclick="playGame('Memory Flip')">🧠 Memory Flip</div>
+    <div class="game-card" onclick="playGame('Coin Toss')">🎯 Coin Toss</div>
+    <div class="game-card" onclick="playGame('Stack Tower')">🧱 Stack Tower</div>
+    <div class="game-card" onclick="playGame('Lucky Numbers')">🔢 Lucky Numbers</div>
+    <div class="game-card" onclick="playGame('Card Match')">🃏 Card Match</div>
+    <div class="game-card" onclick="playGame('Snake Race')">🐍 Snake Race</div>
+  </div>
+
+  <div class="leaderboard">
+    <h2>🏆 Leaderboard (Top Coins)</h2>
+    <ol id="leaderboardList"></ol>
+  </div>
+
+  <script>
+    let coins = 100;
+    const wallet = document.getElementById("wallet");
+    const leaderboard = [
+      { name: "Player1", coins: 300 },
+      { name: "Player2", coins: 200 },
+      { name: "You", coins: 100 },
+    ];
+
+    function updateWallet() {
+      if (coins <= 0) {
+        coins = 10;
+        alert("You're out of coins! You received 10 more to continue playing.");
+      }
+      wallet.textContent = `Coins: ${coins}`;
+    }
+
+    function playGame(name) {
+      if (coins < 5) {
+        alert("Not enough coins to play. Minimum 5 required.");
+        return;
+      }
+      coins -= 5;
+      alert(`You played ${name}! -5 coins`);
+      updateWallet();
+    }
+
+    function claimBonus() {
+      coins += 20;
+      updateWallet();
+      document.getElementById("bonusBtn").disabled = true;
+      alert("Daily bonus claimed! +20 coins");
+    }
+
+    function updateLeaderboard() {
+      leaderboard.sort((a, b) => b.coins - a.coins);
+      const list = document.getElementById("leaderboardList");
+      list.innerHTML = "";
+      leaderboard.forEach(p => {
+        const li = document.createElement("li");
+        li.textContent = `${p.name} - ${p.coins} coins`;
+        list.appendChild(li);
+      });
+    }
+
+    updateWallet();
+    updateLeaderboard();
+  </script>
+</body>
+</html>
